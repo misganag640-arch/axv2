@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <h1>Register Person</h1>
+
+    <form method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+       <div class="form-group">
+    {{ form.person_id.label_tag }}
+    {{ form.person_id }}
+    {{ form.person_id.errors }}
+</div>
+
+<div class="form-group">
+    {{ form.national_id.label_tag }}
+    {{ form.national_id }}
+    {{ form.national_id.errors }}
+</div>
+
+<div class="form-group">
+    {{ form.full_name.label_tag }}
+    {{ form.full_name }}
+    {{ form.full_name.errors }}
+</div>
+
+        <div class="form-group">
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+            {{ form.phone.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            <small>Optional</small>
+            {{ form.email.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.address.label_tag }}
+            {{ form.address }}
+            {{ form.address.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.gender.label_tag }}
+            {{ form.gender }}
+            {{ form.gender.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.date_of_birth.label_tag }}
+            {{ form.date_of_birth }}
+            {{ form.date_of_birth.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.employment_status.label_tag }}
+            {{ form.employment_status }}
+            {{ form.employment_status.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.marital_status.label_tag }}
+            {{ form.marital_status }}
+            {{ form.marital_status.errors }}
+        </div>
+
+        <!-- SPOUSE INFORMATION -->
+        <div id="spouse-section">
+
+            <h3>Spouse Information</h3>
+
+            <div class="form-group">
+                {{ form.spouse_full_name.label_tag }}
+                {{ form.spouse_full_name }}
+                {{ form.spouse_full_name.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.spouse_phone.label_tag }}
+                {{ form.spouse_phone }}
+                {{ form.spouse_phone.errors }}
+            </div>
+
+        </div>
+                <!-- PHOTO UPLOADS -->
+
+        <div class="form-group">
+            <label for="id_photo">Person Photo</label>
+
+            {{ form.photo }}
+
+            <small>
+                Optional. Choose a photo from your device or use the camera if supported.
+            </small>
+
+            {{ form.photo.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_national_id_photo">
+                National ID Photo
+            </label>
+
+            {{ form.national_id_photo }}
+            
+    <!-- ADDITIONAL DOCUMENT PHOTOS -->
+
+    <div class="form-group">
+        <h3>Additional Document Photos</h3>
+         </div>
+
+    <div class="form-group">
+        <label for="id_document_1">Document Photo 1</label>
+        {{ form.document_1 }}
+        {{ form.document_1.errors }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_document_2">Document Photo 2</label>
+        {{ form.document_2 }}
+        {{ form.document_2.errors }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_document_3">Document Photo 3</label>
+        {{ form.document_3 }}
+        {{ form.document_3.errors }}
+    </div>
+```
+
+
+            <small>
+                Optional. Choose a photo from your device or use the camera if supported.
+            </small>
+
+            {{ form.national_id_photo.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.registration_date.label_tag }}
+            {{ form.registration_date }}
+            {{ form.registration_date.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.status.label_tag }}
+            {{ form.status }}
+            {{ form.status.errors }}
+        </div>
+
+        <button type="submit">
+            Register Person
+        </button>
+
+    </form>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const maritalStatus = document.getElementById(
+        "id_marital_status"
+    );
+
+    const spouseSection = document.getElementById(
+        "spouse-section"
+    );
+
+    function toggleSpouseFields() {
+
+        if (!maritalStatus) {
+            return;
+        }
+
+        if (maritalStatus.value === "married") {
+            spouseSection.style.display = "block";
+        } else {
+            spouseSection.style.display = "none";
+        }
+    }
+
+    toggleSpouseFields();
+
+    maritalStatus.addEventListener(
+        "change",
+        toggleSpouseFields
+    );
+
+});
+
+</script>
+
+{% endblock %}

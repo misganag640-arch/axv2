@@ -1,0 +1,827 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ person.full_name }} - Member Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.member-header {
+    background: linear-gradient(135deg, #111827, #1f2937);
+    color: white;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+.member-header h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+}
+
+.member-meta {
+    color: #d1d5db;
+    font-size: 14px;
+}
+
+.balance-card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.07);
+}
+
+.balance-title {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.balance-number {
+    font-size: 34px;
+    font-weight: bold;
+    color: #111827;
+}
+
+.money-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.money-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+.money-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 7px;
+}
+
+.money-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.credit {
+    color: #15803d;
+}
+
+.debit {
+    color: #dc2626;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.action-btn {
+    display: block;
+    text-align: center;
+    padding: 14px 10px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+}
+
+.deposit-btn {
+    background: #16a34a;
+}
+
+.withdraw-btn {
+    background: #dc2626;
+}
+
+.saving-btn {
+    background: #7c3aed;
+}
+
+.transactions-btn {
+    background: #2563eb;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    background: #f9fafb;
+    padding: 14px;
+    border-radius: 10px;
+}
+
+.info-label {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-weight: bold;
+}
+
+.status-paid {
+    color: #15803d;
+    font-weight: bold;
+}
+
+.status-unpaid {
+    color: #b45309;
+    font-weight: bold;
+}
+
+.status-overdue {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+@media (max-width: 800px) {
+
+    .money-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+
+<!-- ===================================================== -->
+<!-- MEMBER HEADER -->
+<!-- ===================================================== -->
+
+<div class="member-header">
+
+    <h1>{{ person.full_name }}</h1>
+
+    <div class="member-meta">
+
+        ID: {{ person.person_id }}
+
+        {% if person.national_id %}
+        &nbsp; | &nbsp;
+        National ID: {{ person.national_id }}
+        {% endif %}
+
+        {% if person.phone %}
+        &nbsp; | &nbsp;
+        Phone: {{ person.phone }}
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- BALANCE -->
+<!-- ===================================================== -->
+
+<div class="balance-card">
+
+    <div class="balance-title">
+        Total Balance
+    </div>
+
+    <div class="balance-number">
+        {{ total_balance }}
+    </div>
+
+    <div class="money-grid">
+
+        <div class="money-box">
+
+            <div class="money-label">
+                Total Credited
+            </div>
+
+            <div class="money-value credit">
+                + {{ total_credited }}
+            </div>
+
+        </div>
+
+
+        <div class="money-box">
+
+            <div class="money-label">
+                Total Debited
+            </div>
+
+            <div class="money-value debit">
+                - {{ total_debited }}
+            </div>
+
+        </div>
+
+
+        <div class="money-box">
+
+            <div class="money-label">
+                Savings
+            </div>
+
+            <div class="money-value">
+                {{ saving_total }}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- QUICK ACTIONS -->
+<!-- ===================================================== -->
+
+<div class="card">
+
+    <h2>Quick Actions</h2>
+
+    <div class="quick-actions">
+        <style>
+   .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.quick-actions .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px 8px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 12px;
+}
+ @media (max-width: 800px) {
+    .quick-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 450px) {
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+}
+.quick-actions .deposit-btn {
+    background-color: #16a34a !important;
+    color: #ffffff !important;
+}
+
+.quick-actions .withdraw-btn {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+.quick-actions .saving-btn {
+    background-color: #7c3aed !important;
+    color: #ffffff !important;
+}
+
+.quick-actions .transactions-btn,
+.quick-actions .profile-btn {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+</style>
+
+        <a
+            class="action-btn deposit-btn"
+            href="{% url 'member_deposit' person.pk %}"
+        >
+            + Make Deposit
+        </a>
+
+        <a
+            class="action-btn withdraw-btn"
+            href="{% url 'member_withdrawal' person.pk %}"
+        >
+            − Make Withdrawal
+        </a>
+
+        <a
+            class="action-btn saving-btn"
+            href="{% url 'member_saving' person.pk %}"
+        >
+            Saving
+        </a>
+
+        <a
+            class="action-btn transactions-btn"
+            href="{% url 'member_transactions' person.pk %}"
+        >
+            View Transactions
+        </a>
+        <a
+         class="action-btn profile-btn"
+         href="{% url 'person_profile' person.pk %}"
+>
+         View Profile
+</a>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- CUSTOMER INFORMATION -->
+<!-- ===================================================== -->
+
+<div class="card">
+
+    <h2>Customer Information</h2>
+
+    <div class="info-grid">
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Member ID
+            </span>
+
+            <span class="info-value">
+                {{ person.person_id }}
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                National ID
+            </span>
+
+            <span class="info-value">
+                {{ person.national_id|default:"-" }}
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Phone
+            </span>
+
+            <span class="info-value">
+                {{ person.phone|default:"-" }}
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Email
+            </span>
+
+            <span class="info-value">
+                {{ person.email|default:"-" }}
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Address
+            </span>
+
+            <span class="info-value">
+                {{ person.address|default:"-" }}
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span class="info-label">
+                Status
+            </span>
+
+            <span class="info-value">
+                {{ person.get_status_display }}
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- ASSIGNED PAYMENT PLANS -->
+<!-- ===================================================== -->
+
+<div class="card">
+
+    <h2>Assigned Plans</h2>
+
+    {% if request.user.is_superuser %}
+
+        <a
+            class="btn"
+            href="{% url 'assign_plan' person.pk %}"
+        >
+            Assign Payment Plan
+        </a>
+
+    {% endif %}
+
+
+    {% for a in assigned_plans %}
+
+        <div style="
+            padding:14px;
+            margin-top:12px;
+            background:#f9fafb;
+            border-radius:10px;
+        ">
+
+            <strong>
+                {{ a.plan.name }}
+            </strong>
+
+            <br>
+
+            Exact amount:
+            {{ a.plan.amount }}
+
+            <br>
+
+            {{ a.plan.get_frequency_display }}
+
+            <br>
+
+            Starts:
+            {{ a.start_date }}
+
+        </div>
+
+    {% empty %}
+
+        <p class="muted">
+            No plan assigned yet.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- PAYMENT SCHEDULE & HISTORY -->
+<!-- ===================================================== -->
+
+<div class="card">
+
+    <h2>Payment Schedule & History</h2>
+
+    <table>
+
+        <tr>
+            <th>Plan</th>
+            <th>Exact Amount</th>
+            <th>Due Date</th>
+            <th>Paid Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+
+        {% for p in payments %}
+
+        <tr>
+
+            <td>
+                {{ p.plan.name }}
+            </td>
+
+            <td>
+                {{ p.amount }}
+            </td>
+
+            <td>
+                {{ p.due_date }}
+            </td>
+
+            <td>
+                {{ p.payment_date|default:"-" }}
+            </td>
+
+            <td>
+
+                {% if p.status == "paid" %}
+
+                    <span class="status-paid">
+                        Paid
+                    </span>
+
+                {% elif p.status == "overdue" %}
+
+                    <span class="status-overdue">
+                        Overdue
+                    </span>
+
+                {% else %}
+
+                    <span class="status-unpaid">
+                        {{ p.status }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if p.status != "paid" %}
+
+                    <a
+                        class="btn"
+                        href="{% url 'payment_create' p.pk %}"
+                    >
+                        Confirm Payment
+                    </a>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="6">
+                No payment schedule yet.
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- RECENT MEMBER TRANSACTIONS -->
+<!-- ===================================================== -->
+
+<div class="card">
+
+    <h2>Recent Transactions</h2>
+
+    <table>
+
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Reference</th>
+        </tr>
+
+        {% for transaction in transactions|slice:":10" %}
+
+        <tr>
+
+            <td>
+                {{ transaction.transaction_date }}
+            </td>
+
+            <td>
+                {{ transaction.get_transaction_type_display }}
+            </td>
+
+            <td>
+
+                {% if transaction.transaction_type == "withdrawal" %}
+
+                    <span class="debit">
+                        - {{ transaction.amount }}
+                    </span>
+
+                {% else %}
+
+                    <span class="credit">
+                        + {{ transaction.amount }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+                {{ transaction.reference_number|default:"-" }}
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="4">
+                No member transactions yet.
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+<div class="card">
+    <h2>Personal Balance</h2>
+
+    <div class="balance-amount">
+        {{ total_balance|floatformat:2 }}
+    </div>
+
+    <p>
+        Current personal balance including earned interest.
+    </p>
+</div>
+
+<div class="dashboard-grid">
+
+    <div class="card">
+        <h3>Personal Payments</h3>
+        <div class="summary-amount">
+            {{ payment_credit|floatformat:2 }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Deposits</h3>
+        <div class="summary-amount">
+            {{ deposit_total|floatformat:2 }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Savings</h3>
+        <div class="summary-amount">
+            {{ saving_total|floatformat:2 }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Interest Earned</h3>
+        <div class="summary-amount">
+            {{ interest_total|floatformat:2 }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Withdrawals</h3>
+        <div class="summary-amount">
+            {{ withdrawal_total|floatformat:2 }}
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- ACTIVITY HISTORY -->
+<!-- ===================================================== -->
+
+<div class="card">
+
+    <h2>Activity History</h2>
+
+    <table>
+
+        <tr>
+            <th>Date</th>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+
+        {% for h in history %}
+
+        <tr>
+
+            <td>
+                {{ h.created_at|date:"Y-m-d H:i" }}
+            </td>
+
+            <td>
+                {{ h.action }}
+            </td>
+
+            <td>
+                {{ h.description }}
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="3">
+                No activity history yet.
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+<h2>Transaction History</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Reference</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>
+                {{ transaction.transaction_date }}
+            </td>
+
+            <td>
+                {{ transaction.get_transaction_type_display }}
+            </td>
+
+            <td>
+                {{ transaction.amount|floatformat:2 }}
+            </td>
+
+            <td>
+                {{ transaction.reference_number|default:"-" }}
+            </td>
+
+            <td>
+                {{ transaction.notes|default:"-" }}
+            </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="5">
+                No transactions yet.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

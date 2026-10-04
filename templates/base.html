@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Business System{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+        nav {
+            background: #111827;
+            color: #fff;
+            padding: 14px 24px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 18px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 5px #0001;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .stat {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 11px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 12px;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+        }
+        button, .btn {
+            background: #2563eb;
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            padding: 10px 14px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .secondary {
+            background: #4b5563;
+        }
+        .danger {
+            color: #b91c1c;
+        }
+        .warn {
+            color: #b45309;
+        }
+        .muted {
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <strong>Business System</strong>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'people' %}">members</a>
+        <a href="{% url 'payments' %}">Payments</a>
+        <a href="{% url 'payments' %}?status=unpaid">Unpaid</a>
+        <a href="{% url 'payments' %}?status=overdue">Overdue</a>
+        <a href="{% url 'notifications' %}">Notifications</a>
+        {% if request.user.is_superuser %}
+        <a href="{% url 'plans' %}">payment Plans</a>
+        <a href="/control-panel/">Wabii Admin</a>
+        {% endif %}
+        <span style="margin-left:auto">{{request.user.username}}</span>
+       <form method="post" action="/logout/">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+</form>
+    </nav>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="card">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ transaction_title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="card" style="
+    max-width:650px;
+    margin:40px auto;
+">
+
+    <h1>
+        {{ transaction_title }}
+    </h1>
+
+    <p class="muted">
+        Member:
+        <strong>{{ person.full_name }}</strong>
+        |
+        ID:
+        <strong>{{ person.person_id }}</strong>
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+
+            <label>
+                <strong>{{ field.label }}</strong>
+            </label>
+
+            {{ field }}
+
+            {% if field.errors %}
+
+                <div class="danger">
+                    {{ field.errors }}
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+        <div style="
+            display:flex;
+            gap:10px;
+            margin-top:15px;
+        ">
+
+            <button type="submit">
+                Save {{ transaction_type }}
+            </button>
+
+            <a
+                href="{% url 'person_detail' person.pk %}"
+                class="btn secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

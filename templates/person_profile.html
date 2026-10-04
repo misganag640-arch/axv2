@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <!-- PROFILE HEADER -->
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:20px;
+        flex-wrap:wrap;
+    ">
+
+        <div>
+            <h1>{{ person.full_name }}</h1>
+
+            <p>
+                <strong>Person ID:</strong>
+                {{ person.person_id }}
+            </p>
+
+            {% if person.national_id %}
+            <p>
+                <strong>National ID:</strong>
+                {{ person.national_id }}
+            </p>
+            {% endif %}
+        </div>
+
+        <a
+            class="action-btn transactions-btn"
+            href="{% url 'member_transactions' person.pk %}"
+        >
+            View Transactions
+        </a>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PERSON PHOTO -->
+    <!-- ===================================================== -->
+
+    <hr>
+
+    <h2>Person Photo</h2>
+
+    {% if person.photo %}
+        <div style="margin-bottom:20px;">
+            <img
+                src="{{ person.photo.url }}"
+                alt="Photo of {{ person.full_name }}"
+                style="
+                    width:220px;
+                    height:220px;
+                    object-fit:cover;
+                    border-radius:12px;
+                    border:1px solid #ddd;
+                "
+            >
+        </div>
+    {% else %}
+        <p>No person photo uploaded.</p>
+    {% endif %}
+
+
+    <!-- ===================================================== -->
+    <!-- NATIONAL ID PHOTO -->
+    <!-- ===================================================== -->
+
+    <hr>
+
+    <h2>National ID Photo</h2>
+
+    {% if person.national_id_photo %}
+        <div style="margin-bottom:20px;">
+            <img
+                src="{{ person.national_id_photo.url }}"
+                alt="National ID photo"
+                style="
+                    max-width:500px;
+                    width:100%;
+                    border-radius:12px;
+                    border:1px solid #ddd;
+                "
+            >
+        </div>
+    {% else %}
+        <p>No National ID photo uploaded.</p>
+    {% endif %}
+
+
+    <!-- ===================================================== -->
+    <!-- OTHER DOCUMENT PHOTOS -->
+    <!-- ===================================================== -->
+
+    <hr>
+
+    <h2>Other Documents</h2>
+
+    {% if documents %}
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+            gap:20px;
+        ">
+
+            {% for document in documents %}
+
+                <div style="
+                    border:1px solid #ddd;
+                    border-radius:12px;
+                    padding:15px;
+                ">
+
+                    <h3>
+                        {% if document.title %}
+                            {{ document.title }}
+                        {% else %}
+                            Document
+                        {% endif %}
+                    </h3>
+
+                    {% if document.image %}
+
+                        <img
+                            src="{{ document.image.url }}"
+                            alt="{{ document.title }}"
+                            style="
+                                width:100%;
+                                max-height:300px;
+                                object-fit:contain;
+                                border-radius:8px;
+                            "
+                        >
+
+                    {% else %}
+
+                        <p>No image uploaded.</p>
+
+                    {% endif %}
+
+                    <small>
+                        Uploaded:
+                        {{ document.uploaded_at|date:"Y-m-d H:i" }}
+                    </small>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>No additional document photos uploaded.</p>
+
+    {% endif %}
+
+
+    <!-- ===================================================== -->
+    <!-- CUSTOMER INFORMATION -->
+    <!-- ===================================================== -->
+
+    <hr>
+
+    <h2>Customer Information</h2>
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+        gap:15px;
+    ">
+
+        <div>
+            <strong>Full Name</strong>
+            <br>
+            {{ person.full_name }}
+        </div>
+
+        <div>
+            <strong>Phone</strong>
+            <br>
+            {{ person.phone|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Email</strong>
+            <br>
+            {{ person.email|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Address</strong>
+            <br>
+            {{ person.address|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Gender</strong>
+            <br>
+            {{ person.get_gender_display|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Date of Birth</strong>
+            <br>
+            {{ person.date_of_birth|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Employment Status</strong>
+            <br>
+            {{ person.get_employment_status_display|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Marital Status</strong>
+            <br>
+            {{ person.get_marital_status_display|default:"Not provided" }}
+        </div>
+
+        {% if person.marital_status == "married" %}
+
+        <div>
+            <strong>Spouse</strong>
+            <br>
+            {{ person.spouse_full_name|default:"Not provided" }}
+        </div>
+
+        <div>
+            <strong>Spouse Phone</strong>
+            <br>
+            {{ person.spouse_phone|default:"Not provided" }}
+        </div>
+
+        {% endif %}
+
+        <div>
+            <strong>Registration Date</strong>
+            <br>
+            {{ person.registration_date }}
+        </div>
+
+        <div>
+            <strong>Status</strong>
+            <br>
+            {{ person.get_status_display }}
+        </div>
+
+    </div>
+
+
+    <hr>
+
+    <a
+        class="action-btn"
+        href="{% url 'person_detail' person.pk %}"
+    >
+        Back to Person
+    </a>
+
+</div>
+
+{% endblock %}

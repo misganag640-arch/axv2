@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Dashboard</h1>
+
+<div class="grid">
+
+  <!-- ACTIVE MEMBERS -->
+  <div class="card">
+    <div class="muted">Active Members</div>
+    <div class="stat">{{ people_count }}</div>
+  </div>
+
+
+  <!-- UNPAID -->
+  <div class="card">
+    <div class="muted">Unpaid (Not Yet Due)</div>
+    <div class="stat warn">{{ unpaid_count }}</div>
+  </div>
+
+
+  <!-- OVERDUE -->
+  <div class="card">
+    <div class="muted">Overdue / Should Have Paid</div>
+    <div class="stat danger">{{ overdue_count }}</div>
+  </div>
+
+
+ <!-- RECENT DEPOSITS -->
+
+<div class="card">
+
+  <div class="muted">
+    Recent Deposits
+  </div>
+
+  <div class="stat">
+    {{ recent_deposits_count }}
+  </div>
+
+  <a
+    class="btn"
+    href="{% url 'recent_deposits' %}"
+  >
+    View Deposits
+  </a>
+
+</div>
+
+
+<!-- RECENT WITHDRAWALS -->
+
+<div class="card">
+
+  <div class="muted">
+    Recent Withdrawals
+  </div>
+
+  <div class="stat">
+    {{ recent_withdrawals_count }}
+  </div>
+
+  <a
+    class="btn"
+    href="{% url 'recent_withdrawals' %}"
+  >
+    View Withdrawals
+  </a>
+
+</div>
+
+
+
+</div>
+
+
+<!-- REGISTER PERSON -->
+
+<div class="card">
+
+  <a
+    class="btn"
+    href="{% url 'person_create' %}"
+  >
+    + Register Person
+  </a>
+
+</div>
+
+
+<!-- OVERDUE PEOPLE -->
+
+<div class="card">
+
+  <h2>Overdue People</h2>
+
+  <table>
+
+    <tr>
+      <th>Name</th>
+      <th>ID</th>
+      <th>Amount</th>
+      <th>Due Date</th>
+    </tr>
+
+
+    {% for p in overdue_people %}
+
+    <tr>
+
+      <td>
+        <a
+          href="{% url 'person_detail' p.person.pk %}"
+        >
+          {{ p.person.full_name }}
+        </a>
+      </td>
+
+      <td>
+        {{ p.person.person_id }}
+      </td>
+
+      <td>
+        {{ p.amount }}
+      </td>
+
+      <td>
+        {{ p.due_date }}
+      </td>
+
+    </tr>
+
+
+    {% empty %}
+
+    <tr>
+
+      <td colspan="4">
+
+        No overdue payments.
+
+      </td>
+
+    </tr>
+
+    {% endfor %}
+
+  </table>
+
+</div>
+
+
+{% endblock %}

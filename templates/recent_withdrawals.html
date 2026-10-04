@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Recent Withdrawals</h1>
+
+<div class="card">
+
+  <table>
+
+    <tr>
+      <th>Person</th>
+      <th>ID</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th>Reference</th>
+      <th>Notes</th>
+    </tr>
+
+    {% for transaction in withdrawals %}
+
+    <tr>
+
+      <td>
+        <a href="{% url 'person_detail' transaction.person.pk %}">
+          {{ transaction.person.full_name }}
+        </a>
+      </td>
+
+      <td>
+        {{ transaction.person.person_id }}
+      </td>
+
+      <td>
+        {{ transaction.amount }}
+      </td>
+
+      <td>
+        {{ transaction.transaction_date }}
+      </td>
+
+      <td>
+        {{ transaction.reference_number|default:"-" }}
+      </td>
+
+      <td>
+        {{ transaction.notes|default:"-" }}
+      </td>
+
+    </tr>
+
+    {% empty %}
+
+    <tr>
+      <td colspan="6">
+        No withdrawals found.
+      </td>
+    </tr>
+
+    {% endfor %}
+
+  </table>
+
+</div>
+
+<div class="card">
+
+  <a class="btn" href="{% url 'dashboard' %}">
+    Back to Dashboard
+  </a>
+
+</div>
+
+{% endblock %}

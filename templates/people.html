@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}
+People
+{% endblock %}
+
+
+{% block content %}
+
+<h1>People</h1>
+
+
+<!-- SEARCH AND PAYMENT PLAN FILTER -->
+
+<div class="card">
+
+    <form method="get">
+
+        <!-- SEARCH -->
+
+        <input
+            name="q"
+            value="{{ q }}"
+            placeholder="Search by ID, name or phone"
+        >
+
+
+        <!-- PAYMENT PLAN FILTER -->
+
+        <select name="plan">
+
+            <option value="">
+                All Payment Plans
+            </option>
+
+           <option
+    value="no_plan"
+    {% if plan_filter == "no_plan" %}
+    selected
+    {% endif %}
+>
+    No Payment Plan
+</option>
+            <option
+                value="monthly"
+                {% if plan_filter == "monthly" %}
+                selected
+                {% endif %}
+            >
+                Monthly
+            </option>
+
+
+            <option
+                value="2months"
+                {% if plan_filter == "2months" %}
+                selected
+                {% endif %}
+            >
+                Every 2 Months
+            </option>
+
+
+            <option
+                value="3months"
+                {% if plan_filter == "3months" %}
+                selected
+                {% endif %}
+            >
+                Every 3 Months
+            </option>
+
+
+            <option
+                value="deposit"
+                {% if plan_filter == "deposit" %}
+                selected
+                {% endif %}
+            >
+                Deposit
+            </option>
+
+        </select>
+
+
+        <!-- SEARCH BUTTON -->
+
+        <button type="submit">
+            Search
+        </button>
+
+
+        <!-- CLEAR FILTER -->
+
+        <a
+            class="btn secondary"
+            href="{% url 'people' %}"
+        >
+            Clear
+        </a>
+
+
+        <!-- REGISTER PERSON -->
+
+        <a
+            class="btn secondary"
+            href="{% url 'person_create' %}"
+        >
+            Register Person
+        </a>
+
+    </form>
+
+</div>
+
+
+<!-- PEOPLE TABLE -->
+
+<div class="card">
+
+    <table>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Name</th>
+
+            <th>Phone</th>
+
+            <th>Status</th>
+
+            <th>Payment Plan</th>
+
+            <th></th>
+
+        </tr>
+
+
+        {% for p in people %}
+
+        <tr>
+
+            <td>
+                {{ p.person_id }}
+            </td>
+
+
+            <td>
+                {{ p.full_name }}
+            </td>
+
+
+            <td>
+                {{ p.phone }}
+            </td>
+
+
+            <td>
+                {{ p.status }}
+            </td>
+
+
+            <!-- SHOW ASSIGNED PLAN -->
+
+            <td>
+
+                {% for assignment in p.assigned_plans.all %}
+
+                    {% if assignment.active %}
+
+                        {{ assignment.plan.name }}
+
+                        {% if not forloop.last %}
+                            ,
+                        {% endif %}
+
+                    {% endif %}
+
+                {% empty %}
+
+                    No Plan
+
+                {% endfor %}
+
+            </td>
+
+
+            <td>
+
+                <a
+                    class="btn"
+                    href="{% url 'person_detail' p.pk %}"
+                >
+                    View
+                </a>
+
+            </td>
+
+        </tr>
+
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="6">
+
+                No people found.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+
+{% endblock %}

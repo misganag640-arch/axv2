@@ -1,0 +1,100 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+
+<div style="
+    margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+">
+
+    <div style="
+        background: #1f6f43;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">TOTAL BALANCE</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_balance }}
+        </div>
+    </div>
+
+    <div style="
+        background: #2563eb;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">TOTAL DEPOSITS</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_deposits }}
+        </div>
+    </div>
+
+    <div style="
+        background: #dc2626;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">TOTAL EXPENSES</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_expenses }}
+        </div>
+    </div>
+
+    <div style="
+        background: #7c3aed;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">TOTAL BORROWED</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_borrowed }}
+        </div>
+    </div>
+
+    <div style="
+        background: #0891b2;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">TOTAL REPAID</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_repaid }}
+        </div>
+    </div>
+
+    <div style="
+        background: #15803d;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">OTHER MONEY IN</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_money_in }}
+        </div>
+    </div>
+
+    <div style="
+        background: #b91c1c;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+    ">
+        <div style="font-size: 15px;">OTHER MONEY OUT</div>
+        <div style="font-size: 30px; font-weight: bold; margin-top: 8px;">
+            {{ total_money_out }}
+        </div>
+    </div>
+
+</div>
+
+{{ block.super }}
+
+{% endblock %}
