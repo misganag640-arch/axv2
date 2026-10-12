@@ -323,6 +323,7 @@ class MemberTransactionForm(forms.ModelForm):
         fields = [
             "amount",
             "transaction_date",
+            "payment_method",
             "reference_number",
             "notes",
         ]
@@ -347,6 +348,7 @@ class MemberTransactionForm(forms.ModelForm):
                     "placeholder": "Optional reference number"
                 }
             ),
+             "payment_method": forms.Select(),
 
             "notes": forms.Textarea(
                 attrs={

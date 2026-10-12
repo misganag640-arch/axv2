@@ -1,0 +1,127 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Financial Management{% endblock %}
+
+{% block content %}
+
+<h1>Financial Management</h1>
+
+<div style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+">
+
+    <!-- TOTAL BALANCE -->
+    <div style="
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    ">
+        <div style="color: #666; font-size: 14px;">
+            Total Balance
+        </div>
+
+        <div style="
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        ">
+            {{ total_balance }}
+        </div>
+    </div>
+
+
+    <!-- TOTAL DEPOSITS -->
+    <div style="
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    ">
+        <div style="color: #666; font-size: 14px;">
+            Total Deposits
+        </div>
+
+        <div style="
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        ">
+            {{ total_deposits }}
+        </div>
+    </div>
+
+
+    <!-- TOTAL EXPENSES -->
+    <div style="
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    ">
+        <div style="color: #666; font-size: 14px;">
+            Total Expenses
+        </div>
+
+        <div style="
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        ">
+            {{ total_expenses }}
+        </div>
+    </div>
+
+
+    <!-- TOTAL BORROWED -->
+    <div style="
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    ">
+        <div style="color: #666; font-size: 14px;">
+            Total Borrowed
+        </div>
+
+        <div style="
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        ">
+            {{ total_borrowed }}
+        </div>
+    </div>
+
+
+    <!-- TOTAL REPAID -->
+    <div style="
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    ">
+        <div style="color: #666; font-size: 14px;">
+            Total Repaid
+        </div>
+
+        <div style="
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        ">
+            {{ total_repaid }}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

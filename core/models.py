@@ -277,8 +277,22 @@ class MemberTransaction(models.Model):
     decimal_places=6,
      )
 
+    
     transaction_date = models.DateField(
         default=date.today
+    )
+
+    payment_method = models.CharField(
+        max_length=30,
+        choices=[
+            ("cash", "Cash"),
+            ("awash_bank", "Awash Bank"),
+            ("oromia_cooperative_bank", "Oromia Cooperative Bank"),
+            ("cbe", "Commercial Bank of Ethiopia (CBE)"),
+            ("telebirr", "Telebirr"),
+            ("other", "Other"),
+        ],
+        default="cash"
     )
 
     reference_number = models.CharField(
@@ -567,27 +581,14 @@ class Payment(models.Model):
     ]
 
     METHOD = [
-
-        (
-            "cash",
-            "Cash"
-        ),
-
-        (
-            "bank",
-            "Bank"
-        ),
-
-        (
-            "telebirr",
-            "Telebirr"
-        ),
-
-        (
-            "other",
-            "Other"
-        ),
+        ("cash", "Cash"),
+        ("awash_bank", "Awash Bank"),
+        ("oromia_cooperative_bank", "Oromia Cooperative Bank"),
+        ("cbe", "Commercial Bank of Ethiopia (CBE)"),
+        ("telebirr", "Telebirr"),
+        ("other", "Other"),
     ]
+
 
     person = models.ForeignKey(
         Person,
@@ -613,9 +614,9 @@ class Payment(models.Model):
     )
 
     payment_method = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=METHOD,
-        default="bank"
+        default="cash"
     )
 
     reference_number = models.CharField(
@@ -1012,10 +1013,12 @@ class Borrow(models.Model):
     ]
 
     PAYMENT_METHODS = [
-        ("cash", "Cash"),
-        ("bank", "Bank"),
-        ("telebirr", "Telebirr"),
-        ("other", "Other"),
+    ("cash", "Cash"),
+    ("awash_bank", "Awash Bank"),
+    ("oromia_cooperative_bank", "Oromia Cooperative Bank"),
+    ("cbe", "Commercial Bank of Ethiopia (CBE)"),
+    ("telebirr", "Telebirr"),
+    ("other", "Other"),
     ]
 
     person = models.ForeignKey(
@@ -1075,9 +1078,9 @@ class Borrow(models.Model):
 
     # Payment method used when giving the borrowed money
     payment_method = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=PAYMENT_METHODS,
-        default="bank"
+        default="cash"
     )
 
     status = models.CharField(
@@ -1328,11 +1331,14 @@ class Borrow(models.Model):
             f"Borrowed {self.principal_amount}"
         )
     
+
 class BorrowRepayment(models.Model):
 
     PAYMENT_METHODS = [
         ("cash", "Cash"),
-        ("bank", "Bank"),
+        ("awash_bank", "Awash Bank"),
+        ("oromia_cooperative_bank", "Oromia Cooperative Bank"),
+        ("cbe", "Commercial Bank of Ethiopia (CBE)"),
         ("telebirr", "Telebirr"),
         ("other", "Other"),
     ]
@@ -1353,9 +1359,9 @@ class BorrowRepayment(models.Model):
     )
 
     payment_method = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=PAYMENT_METHODS,
-        default="bank"
+        default="cash"
     )
 
     reference_number = models.CharField(
@@ -1700,7 +1706,9 @@ class LoanRepayment(models.Model):
 
     PAYMENT_METHODS = [
         ("cash", "Cash"),
-        ("bank", "Bank"),
+        ("awash_bank", "Awash Bank"),
+        ("oromia_cooperative_bank", "Oromia Cooperative Bank"),
+        ("cbe", "Commercial Bank of Ethiopia (CBE)"),
         ("telebirr", "Telebirr"),
         ("other", "Other"),
     ]
@@ -1721,7 +1729,7 @@ class LoanRepayment(models.Model):
     )
 
     payment_method = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=PAYMENT_METHODS,
         default="cash"
     )

@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from core import views
-
+admin.site.site_header = "wabii admin"
 urlpatterns = [
     # Django Admin
    path("control-panel/", admin.site.urls),
