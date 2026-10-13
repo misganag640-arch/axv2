@@ -9,6 +9,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "192.168.43.117",
+      "wabii.app.aletcloud.com",
 ]
 
 INSTALLED_APPS = [
