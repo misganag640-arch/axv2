@@ -57,7 +57,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("https://dash.cloudflare.com/9b80657391c09d8708e39eb8dee4392e/home"),
+        default=os.environ.get("https://console.neon.tech/app/org-restless-sky-54507391/projects"),
         conn_max_age=0,
     )
 }
