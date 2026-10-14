@@ -9,6 +9,7 @@ class AdminIPRestrictionMiddleware:
         "192.168.43.117",
         "196.189.24.48",
          "192.168.1.2"
+         " 196.189.28.229"
         # Add your own public admin IP here when you want to access it on production
     ]
 
