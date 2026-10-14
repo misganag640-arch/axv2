@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,8 +10,11 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "192.168.43.117",
-      "wabii.app.aletcloud.com",
+    "axv2-58td.vercel.app",
+    "wabii.app.aletcloud.com",
+     "axv2-ihj5v2jm1-misganag640-7147s-projects.vercel.app",
+    ".vercel.app",
+    "axv2.app.aletcloud.com"
 ]
 
 INSTALLED_APPS = [
@@ -53,10 +58,11 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=0,
+        ssl_require=True,
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
