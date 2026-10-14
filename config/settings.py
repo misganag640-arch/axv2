@@ -10,9 +10,10 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "192.168.43.117",
     "axv2-58td.vercel.app",
     "wabii.app.aletcloud.com",
+     "axv2-ihj5v2jm1-misganag640-7147s-projects.vercel.app",
+    ".vercel.app",
 ]
 
 INSTALLED_APPS = [
