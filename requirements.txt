@@ -9,3 +9,5 @@ gunicorn
 whitenoise
 dj-database-url
 psycopg
+dj-database-url
+psycopg[binary]
