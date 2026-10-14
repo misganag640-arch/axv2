@@ -14,6 +14,7 @@ ALLOWED_HOSTS = [
     "wabii.app.aletcloud.com",
      "axv2-ihj5v2jm1-misganag640-7147s-projects.vercel.app",
     ".vercel.app",
+    "axv2.app.aletcloud.com"
 ]
 
 INSTALLED_APPS = [
@@ -58,8 +59,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("https://console.neon.tech/app/org-restless-sky-54507391/projects"),
+        default=os.environ.get("DATABASE_URL"),
         conn_max_age=0,
+        ssl_require=True,
     )
 }
 
