@@ -8,9 +8,7 @@ class AdminIPRestrictionMiddleware:
         "::1",
         "192.168.43.117",
         "196.189.24.48",
-         "192.168.1.2",
-        "192.168.1.7",
-        "192.168.1.4",
+         "192.168.1.2"
         # Add your own public admin IP here when you want to access it on production
     ]
 
@@ -29,9 +27,7 @@ class AdminIPRestrictionMiddleware:
 
             print("ADMIN REQUEST IP:", client_ip)
 
-            if client_ip not in self.ALLOWED_ADMIN_IPS:
-                return HttpResponseForbidden(
-                    f"Access denied. Your IP is: {client_ip}"
-                )
+            # IP restriction check has been removed. 
+            # Anyone with valid credentials can now access the admin page.
 
         return self.get_response(request)
